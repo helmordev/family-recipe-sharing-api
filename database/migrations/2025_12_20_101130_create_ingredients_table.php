@@ -13,14 +13,15 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('personal_access_tokens', function (Blueprint $table): void {
+        Schema::create('ingredients', function (Blueprint $table): void {
             $table->id();
-            $table->morphs('tokenable');
-            $table->text('name');
-            $table->string('token', 64)->unique();
-            $table->text('abilities')->nullable();
-            $table->timestamp('last_used_at')->nullable();
-            $table->timestamp('expires_at')->nullable()->index();
+            $table->foreignId('recipe_id')
+                ->constrained()
+                ->cascadeOnDelete();
+
+            $table->string('name');
+            $table->string('quantity')->nullable();
+            $table->string('unit')->nullable();
             $table->timestamps();
         });
     }
@@ -30,6 +31,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('personal_access_tokens');
+        Schema::dropIfExists('ingredients');
     }
 };
