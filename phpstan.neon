@@ -1,0 +1,15 @@
+includes:
+    - vendor/larastan/larastan/extension.neon
+    - phar://phpstan.phar/conf/bleedingEdge.neon
+
+parameters:
+
+    paths:
+        - app
+        - bootstrap/app.php
+        - config
+        - database
+        - public
+        - routes
+
+    level: 6

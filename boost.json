@@ -1,0 +1,14 @@
+{
+    "agents": [
+        "cursor",
+        "gemini",
+        "opencode"
+    ],
+    "editors": [
+        "cursor",
+        "gemini",
+        "opencode",
+        "vscode"
+    ],
+    "guidelines": []
+}
