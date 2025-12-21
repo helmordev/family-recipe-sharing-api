@@ -41,7 +41,7 @@ final class RecipeFactory extends Factory
             'title' => fake()->randomElement($recipeTitles),
             'description' => fake()->paragraph(3),
             'visibility' => fake()->randomElement(RecipeVisibility::cases()),
-            'image_path' => fake()->boolean(70) ? 'recipes/' . fake()->uuid() . '.jpg' : null,
+            'image_path' => fake()->boolean(70) ? 'recipes/'.fake()->uuid().'.jpg' : null,
             'prep_time' => fake()->numberBetween(5, 60),
             'cook_time' => fake()->numberBetween(10, 180),
             'servings' => fake()->numberBetween(1, 12),

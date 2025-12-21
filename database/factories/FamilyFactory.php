@@ -21,7 +21,7 @@ final class FamilyFactory extends Factory
     public function definition(): array
     {
         return [
-            'name' => fake()->lastName() . ' Family',
+            'name' => fake()->lastName().' Family',
             'owner_id' => User::factory(),
         ];
     }
