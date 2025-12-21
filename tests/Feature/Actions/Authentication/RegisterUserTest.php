@@ -146,7 +146,7 @@ describe('RegisterUser Action - validation rules', function () {
     });
 
     it('requires email to not exceed 255 characters', function () {
-        $longEmail = str_repeat('a', 250) . '@test.com';
+        $longEmail = str_repeat('a', 250).'@test.com';
 
         $response = $this->postJson('/api/register', [
             'name' => 'John Doe',
