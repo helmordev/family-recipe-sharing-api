@@ -24,6 +24,6 @@ final class LogoutUser
         return response()->json([
             'success' => true,
             'message' => 'Logged out successfully.',
-        ]);
+        ], 200);
     }
 }

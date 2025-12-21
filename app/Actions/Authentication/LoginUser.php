@@ -76,6 +76,6 @@ final class LoginUser
                 'user' => new UserResource($result['user']),
                 'token' => $result['token'],
             ],
-        ]);
+        ], 200);
     }
 }

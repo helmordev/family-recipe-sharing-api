@@ -27,6 +27,6 @@ final class RefreshToken
             'success' => true,
             'message' => 'Token refreshed successfully.',
             'token' => $token,
-        ]);
+        ], 200);
     }
 }
