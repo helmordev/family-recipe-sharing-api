@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-use Illuminate\Http\Request;
+use App\Actions\Authentication\RegisterUser;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/user', function (Request $request) {
-    return $request->user();
-})->middleware('auth:sanctum');
+Route::middleware('guest:sanctum')->group(function (): void {
+    Route::post('/register', RegisterUser::class);
+});
