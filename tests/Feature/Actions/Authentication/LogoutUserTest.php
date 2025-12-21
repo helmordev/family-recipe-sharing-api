@@ -6,38 +6,45 @@ use App\Actions\Authentication\LogoutUser;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
+use function Pest\Laravel\actingAs;
 use function Pest\Laravel\postJson;
 
 uses(RefreshDatabase::class);
 
 describe('LogoutUser Action - handle method', function () {
-    it('deletes all user tokens', function () {
+    it('deletes only the current access token', function () {
         $user = User::factory()->create();
         $user->createToken('token_1');
         $user->createToken('token_2');
-        $user->createToken('token_3');
+        $token = $user->createToken('token_3');
 
         expect($user->tokens()->count())->toBe(3);
 
+        actingAs($user);
+
         $request = request();
         $request->setUserResolver(fn () => $user);
+        $request->user()->withAccessToken($token->accessToken);
 
         $action = new LogoutUser();
         $action->handle($request);
 
-        expect($user->fresh()->tokens()->count())->toBe(0);
+        expect($user->fresh()->tokens()->count())->toBe(2);
     });
 
-    it('deletes only the authenticated user tokens', function () {
+    it('deletes only the current token, not other user tokens', function () {
         $user1 = User::factory()->create();
         $user2 = User::factory()->create();
 
-        $user1->createToken('user1_token');
+        $token1 = $user1->createToken('user1_token');
         $user2->createToken('user2_token_1');
         $user2->createToken('user2_token_2');
 
+        actingAs($user1);
+
         $request = request();
         $request->setUserResolver(fn () => $user1);
+        $request->user()->withAccessToken($token1->accessToken);
 
         $action = new LogoutUser();
         $action->handle($request);
@@ -46,18 +53,24 @@ describe('LogoutUser Action - handle method', function () {
             ->and($user2->fresh()->tokens()->count())->toBe(2);
     });
 
-    it('handles user with no tokens', function () {
+    it('keeps other tokens when logging out', function () {
         $user = User::factory()->create();
+        $user->createToken('other_token_1');
+        $currentToken = $user->createToken('current_token');
+        $user->createToken('other_token_2');
 
-        expect($user->tokens()->count())->toBe(0);
+        expect($user->tokens()->count())->toBe(3);
+
+        actingAs($user);
 
         $request = request();
         $request->setUserResolver(fn () => $user);
+        $request->user()->withAccessToken($currentToken->accessToken);
 
         $action = new LogoutUser();
         $action->handle($request);
 
-        expect($user->fresh()->tokens()->count())->toBe(0);
+        expect($user->fresh()->tokens()->count())->toBe(2);
     });
 });
 
@@ -81,7 +94,7 @@ describe('LogoutUser Action - as controller', function () {
             ]);
     });
 
-    it('deletes all user tokens after logout', function () {
+    it('deletes only the current token after logout', function () {
         $user = User::factory()->create();
         $user->createToken('token_1');
         $user->createToken('token_2');
@@ -94,7 +107,7 @@ describe('LogoutUser Action - as controller', function () {
         ]);
 
         $response->assertSuccessful();
-        expect($user->fresh()->tokens()->count())->toBe(0);
+        expect($user->fresh()->tokens()->count())->toBe(2);
     });
 
     it('returns 401 when user is not authenticated', function () {
@@ -134,7 +147,7 @@ describe('LogoutUser Action - as controller', function () {
         $response->assertUnauthorized();
     });
 
-    it('cannot use token after logout', function () {
+    it('cannot use current token after logout', function () {
         $user = User::factory()->create();
         $tokenResult = $user->createToken('auth_token');
         $token = $tokenResult->plainTextToken;
@@ -183,7 +196,7 @@ describe('LogoutUser Action - as controller', function () {
         $user1 = $user1->fresh();
         $user2 = $user2->fresh();
 
-        // User 1's token should be deleted, User 2's should remain
+        // User 1's current token should be deleted, User 2's should remain
         expect($user1->tokens()->count())->toBe(0)
             ->and($user2->tokens()->count())->toBe(1);
     });

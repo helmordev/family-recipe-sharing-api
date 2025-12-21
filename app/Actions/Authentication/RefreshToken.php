@@ -8,22 +8,25 @@ use Illuminate\Http\Request;
 use Lorisleiva\Actions\Concerns\AsAction;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
-final class LogoutUser
+final class RefreshToken
 {
     use AsAction;
 
-    public function handle(Request $request): void
+    public function handle(Request $request): string
     {
         $request->user()->currentAccessToken()->delete();
+
+        return $request->user()->createToken('auth_token')->plainTextToken;
     }
 
     public function asController(Request $request): JsonResponse
     {
-        $this->handle($request);
+        $token = $this->handle($request);
 
         return response()->json([
             'success' => true,
-            'message' => 'Logged out successfully.',
+            'message' => 'Token refreshed successfully.',
+            'token' => $token,
         ]);
     }
 }
