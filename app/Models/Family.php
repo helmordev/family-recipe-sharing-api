@@ -31,7 +31,7 @@ final class Family extends Model
      */
     protected $fillable = [
         'name',
-        'owener_id',
+        'owner_id',
     ];
 
     /**
@@ -49,7 +49,7 @@ final class Family extends Model
      *
      * @return BelongsToMany<User, $this>
      */
-    public function users(): BelongsToMany
+    public function members(): BelongsToMany
     {
         return $this->belongsToMany(User::class)
             ->withPivot('role', 'joined_at');

@@ -72,6 +72,16 @@ final class User extends Authenticatable
     }
 
     /**
+     * Get the families owned by the user.
+     *
+     * @return HasMany<Family, $this>
+     */
+    public function ownedFamilies(): HasMany
+    {
+        return $this->hasMany(Family::class, 'owner_id');
+    }
+
+    /**
      * Get the favorites for the user.
      *
      * @return HasMany<Favorite, $this>
