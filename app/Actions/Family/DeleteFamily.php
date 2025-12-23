@@ -27,7 +27,7 @@ final class DeleteFamily
         return $family->owner_id === $user->id;
     }
 
-    public function asController(ActionRequest $request, Family $family): void
+    public function asController(Family $family): void
     {
         $this->handle($family);
     }

@@ -47,7 +47,7 @@ describe('DeleteFamily Action - authorize method', function () {
         $family = Family::factory()->create(['owner_id' => $owner->id]);
 
         $request = new Lorisleiva\Actions\ActionRequest();
-        $request->setUserResolver(fn() => $owner);
+        $request->setUserResolver(fn () => $owner);
 
         $action = new DeleteFamily();
         $authorized = $action->authorize($request, $family);
@@ -61,7 +61,7 @@ describe('DeleteFamily Action - authorize method', function () {
         $family = Family::factory()->create(['owner_id' => $owner->id]);
 
         $request = new Lorisleiva\Actions\ActionRequest();
-        $request->setUserResolver(fn() => $nonOwner);
+        $request->setUserResolver(fn () => $nonOwner);
 
         $action = new DeleteFamily();
         $authorized = $action->authorize($request, $family);
@@ -77,7 +77,7 @@ describe('DeleteFamily Action - authorize method', function () {
         $family->members()->attach($member->id, ['role' => 'member', 'joined_at' => now()]);
 
         $request = new Lorisleiva\Actions\ActionRequest();
-        $request->setUserResolver(fn() => $member);
+        $request->setUserResolver(fn () => $member);
 
         $action = new DeleteFamily();
         $authorized = $action->authorize($request, $family);
@@ -91,7 +91,7 @@ describe('DeleteFamily Action - asController method', function () {
         $owner = User::factory()->create();
 
         // Use CreateFamily action to properly set up the family
-        $createAction = new \App\Actions\Family\CreateFamily();
+        $createAction = new App\Actions\Family\CreateFamily();
         $family = $createAction->handle(['name' => 'Test Family'], $owner);
 
         Sanctum::actingAs($owner);
@@ -112,7 +112,7 @@ describe('DeleteFamily Action - asController method', function () {
         $nonOwner = User::factory()->create();
 
         // Use CreateFamily action to properly set up the family
-        $createAction = new \App\Actions\Family\CreateFamily();
+        $createAction = new App\Actions\Family\CreateFamily();
         $family = $createAction->handle(['name' => 'Test Family'], $owner);
 
         $response = $this->actingAs($nonOwner)->deleteJson("/api/families/{$family->id}");
@@ -124,7 +124,7 @@ describe('DeleteFamily Action - asController method', function () {
         $owner = User::factory()->create();
 
         // Use CreateFamily action to properly set up the family
-        $createAction = new \App\Actions\Family\CreateFamily();
+        $createAction = new App\Actions\Family\CreateFamily();
         $family = $createAction->handle(['name' => 'Test Family'], $owner);
 
         $response = $this->deleteJson("/api/families/{$family->id}");
@@ -146,7 +146,7 @@ describe('DeleteFamily Action - asController method', function () {
         $member2 = User::factory()->create();
 
         // Use CreateFamily action to properly set up the family
-        $createAction = new \App\Actions\Family\CreateFamily();
+        $createAction = new App\Actions\Family\CreateFamily();
         $family = $createAction->handle(['name' => 'Test Family'], $owner);
 
         $family->members()->attach($member1->id, ['role' => 'member', 'joined_at' => now()]);

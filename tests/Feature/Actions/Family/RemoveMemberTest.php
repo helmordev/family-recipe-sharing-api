@@ -95,7 +95,7 @@ describe('RemoveMember Action - authorize method', function () {
         $family = Family::factory()->create(['owner_id' => $owner->id]);
 
         $request = new Lorisleiva\Actions\ActionRequest();
-        $request->setUserResolver(fn() => $owner);
+        $request->setUserResolver(fn () => $owner);
 
         $action = new RemoveMember();
         $authorized = $action->authorize($request, $family);
@@ -109,7 +109,7 @@ describe('RemoveMember Action - authorize method', function () {
         $family = Family::factory()->create(['owner_id' => $owner->id]);
 
         $request = new Lorisleiva\Actions\ActionRequest();
-        $request->setUserResolver(fn() => $member);
+        $request->setUserResolver(fn () => $member);
 
         $action = new RemoveMember();
         $authorized = $action->authorize($request, $family);
@@ -123,7 +123,7 @@ describe('RemoveMember Action - authorize method', function () {
         $family = Family::factory()->create(['owner_id' => $owner->id]);
 
         $request = new Lorisleiva\Actions\ActionRequest();
-        $request->setUserResolver(fn() => $nonMember);
+        $request->setUserResolver(fn () => $nonMember);
 
         $action = new RemoveMember();
         $authorized = $action->authorize($request, $family);
