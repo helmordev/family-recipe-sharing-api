@@ -27,7 +27,7 @@ final class CreateFamily
             ]);
 
             $family->members()->attach($user->id, [
-                'role' => 'owner',
+                'role' => 'admin',
                 'joined_at' => now(),
             ]);
 

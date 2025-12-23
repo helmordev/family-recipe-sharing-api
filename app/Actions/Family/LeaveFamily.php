@@ -15,25 +15,32 @@ final class LeaveFamily
 {
     use AsAction;
 
-    public function handle(Family $family, User $user): Family
+    /**
+     * @throws ValidationException
+     */
+    public function handle(Family $family, User $user): void
     {
         if ($family->owner_id === $user->id) {
             throw ValidationException::withMessages([
-                'message' => 'The owner of the family cannot leave the family. Please transfer ownership or delete the family.',
+                'family' => 'The owner of the family cannot leave the family. Please transfer ownership or delete the family.',
+            ]);
+        }
+
+        if (! $family->members()->where('user_id', $user->id)->exists()) {
+            throw ValidationException::withMessages([
+                'family' => 'You are not a member of this family.',
             ]);
         }
 
         $family->members()->detach($user->id);
-
-        return $family;
     }
 
-    public function asController(ActionRequest $request, Family $family): Family
+    public function asController(ActionRequest $request, Family $family): void
     {
         /** @var User $user */
         $user = $request->user();
 
-        return $this->handle($family, $user);
+        $this->handle($family, $user);
     }
 
     public function jsonResponse(): JsonResponse

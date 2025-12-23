@@ -20,7 +20,7 @@ final class ListFamilies
      */
     public function handle(User $user): Collection
     {
-        return $user->families()->with('owner', 'users')->get();
+        return $user->families()->with('owner', 'members')->get();
     }
 
     /**
