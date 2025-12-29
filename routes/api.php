@@ -8,6 +8,7 @@ use App\Actions\Authentication\RefreshToken;
 use App\Actions\Authentication\RegisterUser;
 use App\Actions\Family\CreateFamily;
 use App\Actions\Family\DeleteFamily;
+use App\Actions\Family\InviteMember;
 use App\Actions\Family\LeaveFamily;
 use App\Actions\Family\ListFamilies;
 use App\Actions\Family\RemoveMember;
@@ -26,6 +27,7 @@ Route::middleware('auth:sanctum')->group(function (): void {
     Route::post('/families', CreateFamily::class);
     Route::get('/families', ListFamilies::class);
     Route::delete('/families/{family}', DeleteFamily::class);
+    Route::post('/families/invite', InviteMember::class);
     Route::delete('/families/{family}/members/{user}', RemoveMember::class);
     Route::post('/families/{family}/leave', LeaveFamily::class);
 });

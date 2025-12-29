@@ -66,6 +66,16 @@ final class Family extends Model
     }
 
     /**
+     * Get the invitations that belong to the family.
+     *
+     * @return HasMany<FamilyInvitation, $this>
+     */
+    public function invitations(): HasMany
+    {
+        return $this->hasMany(FamilyInvitation::class);
+    }
+
+    /**
      * Get the attributes that should be cast.
      *
      * @return array<string, string>
