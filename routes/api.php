@@ -12,6 +12,7 @@ use App\Actions\Family\InviteMember;
 use App\Actions\Family\LeaveFamily;
 use App\Actions\Family\ListFamilies;
 use App\Actions\Family\RemoveMember;
+use App\Actions\Recipe\CreateRecipe;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware('guest:sanctum')->group(function (): void {
@@ -30,4 +31,7 @@ Route::middleware('auth:sanctum')->group(function (): void {
     Route::post('/families/invite', InviteMember::class);
     Route::delete('/families/{family}/members/{user}', RemoveMember::class);
     Route::post('/families/{family}/leave', LeaveFamily::class);
+
+    // Recipe Routes
+    Route::post('/recipes', CreateRecipe::class);
 });
