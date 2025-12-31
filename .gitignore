@@ -11,6 +11,8 @@
 /.phpunit.cache
 /.vscode
 /.zed
+/.zencoder
+/.zenflow
 /auth.json
 /node_modules
 /public/build
